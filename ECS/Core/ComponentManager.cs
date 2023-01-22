@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System;
 
-namespace ECS
+namespace ECS.Core
 {
     public class ComponentManager
     {

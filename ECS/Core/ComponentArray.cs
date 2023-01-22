@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace ECS
+namespace ECS.Core
 {
 
     public class ComponentArray<T> : IComponentArray where T : IComponent
@@ -19,7 +19,7 @@ namespace ECS
             mIndexToEntityMap = new();
             mSize = 0;
         }
-    
+
         public void Insert(Entity entity, T component)
         {
             uint id = entity.Id;

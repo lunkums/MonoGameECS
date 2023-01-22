@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using ECS.Components;
+using ECS.Core;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace ECS
+namespace ECS.Systems
 {
-    public class SpriteSystem : System, IRenderSystem
+    public class SpriteSystem : ECSystem, IRenderSystem
     {
         public override ComponentMask ComponentMask => ComponentMask.Transform | ComponentMask.Sprite;
 

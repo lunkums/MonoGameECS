@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ECS.Components;
+using ECS.Core;
+using Microsoft.Xna.Framework;
 
-namespace ECS
+namespace ECS.Systems
 {
-    public class PhysicsSystem : System, IUpdateSystem
+    public class PhysicsSystem : ECSystem, IUpdateSystem
     {
         public static readonly Vector2 TerminalVelocity = new(Game1.WindowWidth, Game1.WindowHeight);
 

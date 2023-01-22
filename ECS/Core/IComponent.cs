@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ECS
+namespace ECS.Core
 {
     public interface IComponent
     {

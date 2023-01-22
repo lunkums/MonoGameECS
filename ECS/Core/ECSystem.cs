@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace ECS
+namespace ECS.Core
 {
-    public abstract class System : ISystem
+    // Called 'ECSystem' rather than 'System' because it's an occupied namespace
+    public abstract class ECSystem : ISystem
     {
         private HashSet<Entity> entities = new();
 

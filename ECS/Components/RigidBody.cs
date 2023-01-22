@@ -1,6 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ECS.Core;
+using Microsoft.Xna.Framework;
 
-namespace ECS
+namespace ECS.Components
 {
     public struct RigidBody : IComponent
     {

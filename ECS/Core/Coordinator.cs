@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ECS
+namespace ECS.Core
 {
     public sealed class Coordinator
     {
@@ -97,7 +97,7 @@ namespace ECS
 
         // System methods
 
-        public void RegisterSystem<T>() where T : System, new()
+        public void RegisterSystem<T>() where T : ECSystem, new()
         {
             T system = systemManager.RegisterSystem<T>();
             systemManager.SetSignature<T>(system.ComponentMask);

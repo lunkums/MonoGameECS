@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace ECS
+namespace ECS.Core
 {
     public interface IRenderSystem : ISystem
     {

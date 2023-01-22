@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ECS.Components;
+using ECS.Core;
+using ECS.Systems;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;

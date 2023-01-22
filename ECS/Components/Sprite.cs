@@ -1,7 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ECS.Core;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ECS
+namespace ECS.Components
 {
     public struct Sprite : IComponent
     {

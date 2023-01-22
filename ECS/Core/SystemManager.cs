@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace ECS
+namespace ECS.Core
 {
     public class SystemManager
     {
         private Dictionary<Type, ComponentMask> componentMasks = new();
-        private Dictionary<Type, System> systems = new();
+        private Dictionary<Type, ECSystem> systems = new();
 
-        public T RegisterSystem<T>() where T : System, new()
+        public T RegisterSystem<T>() where T : ECSystem, new()
         {
             Debug.Assert(!systems.ContainsKey(typeof(T)), "Registering system more than once.");
 
@@ -18,7 +18,7 @@ namespace ECS
             return system;
         }
 
-        public void SetSignature<T>(ComponentMask componentMask) where T : System
+        public void SetSignature<T>(ComponentMask componentMask) where T : ECSystem
         {
             Debug.Assert(systems.ContainsKey(typeof(T)), "System used before registered.");
 
@@ -28,7 +28,7 @@ namespace ECS
 
         public void EntityDestroyed(Entity entity)
         {
-            foreach (System system in systems.Values)
+            foreach (ECSystem system in systems.Values)
             {
                 system.Remove(entity);
             }
@@ -36,10 +36,10 @@ namespace ECS
 
         public void EntitySignatureChanged(Entity entity, ComponentMask entityComponentMask)
         {
-            foreach (KeyValuePair<Type, System> pair in systems)
+            foreach (KeyValuePair<Type, ECSystem> pair in systems)
             {
                 Type type = pair.Key;
-                System system = pair.Value;
+                ECSystem system = pair.Value;
                 ComponentMask systemComponentMask = componentMasks[type];
 
                 if (entityComponentMask.HasFlag(systemComponentMask))

@@ -1,6 +1,9 @@
-﻿namespace ECS
+﻿using ECS.Components;
+using ECS.Core;
+
+namespace ECS.Systems
 {
-    public class SpawnSystem : System, IUpdateSystem
+    public class SpawnSystem : ECSystem, IUpdateSystem
     {
         public override ComponentMask ComponentMask => ComponentMask.Transform;
 
@@ -12,7 +15,7 @@
 
                 // Respawn before the top of the window if it falls past the bottom
                 transform.Position.Y = transform.Position.Y % Game1.WindowHeight
-                    - ((int)transform.Position.Y / Game1.WindowHeight * 128);
+                    - (int)transform.Position.Y / Game1.WindowHeight * 128;
             }
         }
     }
