@@ -26,6 +26,7 @@ namespace ECS
                 
             };
             Content.RootDirectory = "Content";
+            IsFixedTimeStep = false;
             IsMouseVisible = true;
         }
 
@@ -78,6 +79,7 @@ namespace ECS
                 entity.AddComponent<RigidBody>(new()
                 {
                     Acceleration = Vector2.Zero,
+                    AngularVelocity = random.NextSingle() * 15f,
                     Gravity = new Vector2(0, random.NextSingle() * 981f),
                     Velocity = Vector2.Zero
                 });
@@ -92,7 +94,6 @@ namespace ECS
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             coordinator.Update(deltaTime);
-            counter.Update(deltaTime);
 
             base.Update(gameTime);
         }
@@ -105,8 +106,11 @@ namespace ECS
                 DepthStencilState.None, RasterizerState.CullNone);
 
             coordinator.Render(spriteBatch);
+
             // Draw FPS
-            spriteBatch.DrawString(fpsFont, counter.CurrentFramesPerSecond.ToString(), new Vector2(1, 1), Color.Black,
+            float frameTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            counter.Update(frameTime);
+            spriteBatch.DrawString(fpsFont, counter.CurrentFramesPerSecond.ToString(), Vector2.One, Color.Black,
                 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.5f);
 
             spriteBatch.End();
