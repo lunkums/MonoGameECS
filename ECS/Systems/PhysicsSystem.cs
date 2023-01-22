@@ -14,8 +14,8 @@ namespace ECS.Systems
         {
             foreach (Entity entity in Entities)
             {
-                ref RigidBody rigidBody = ref entity.GetComponentReference<RigidBody>();
-                ref Transform transform = ref entity.GetComponentReference<Transform>();
+                ref RigidBodyData rigidBody = ref entity.GetComponentReference<RigidBodyData>();
+                ref TransformData transform = ref entity.GetComponentReference<TransformData>();
 
                 rigidBody.Acceleration += rigidBody.Gravity * deltaTime;
                 rigidBody.Velocity += rigidBody.Acceleration * deltaTime;

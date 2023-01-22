@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ECS.Core
 {
-    public class ComponentArray<T> : IComponentArray where T : IComponent
+    public class ComponentArray<T> : IComponentArray where T : IComponentData
     {
         private T[] componentArray;
         private Dictionary<uint, int> entityToIndexMap;
@@ -58,6 +58,15 @@ namespace ECS.Core
             Debug.Assert(entityToIndexMap.ContainsKey(id), "Retrieving non-existent component.");
 
             return ref componentArray[entityToIndexMap[id]];
+        }
+
+        public void Set(Entity entity, T component)
+        {
+            uint id = entity.Id;
+            // Could provide a more lenient interface by inserting if not present in the component array
+            Debug.Assert(entityToIndexMap.ContainsKey(id), "Setting non-existent component.");
+
+            componentArray[id] = component;
         }
 
         public void EntityDestroyed(Entity entity)

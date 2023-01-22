@@ -1,6 +1,8 @@
-﻿namespace ECS.Core
+﻿using System;
+
+namespace ECS.Core
 {
-    public struct Entity
+    public class Entity
     {
         public uint Id { get; init; }
 
@@ -9,19 +11,28 @@
             return Coordinator.Instance.CreateEntity();
         }
 
-        public void AddComponent<T>(T component) where T : IComponent
+        public void AddComponent<T>(T component) where T : IComponentData
         {
             Coordinator.Instance.AddComponent(this, component);
         }
 
-        public ref T GetComponentReference<T>() where T : IComponent
+        public ref T GetComponentReference<T>() where T : IComponentData
         {
             return ref Coordinator.Instance.GetComponent<T>(this);
         }
 
-        public T GetComponent<T>() where T : IComponent
+        public T GetComponent<T>() where T : IComponentWrapper, new()
         {
-            return Coordinator.Instance.GetComponent<T>(this);
+            T t = new()
+            {
+                Owner = this
+            };
+            return t;
+        }
+
+        public void SetComponent<T>(T component) where T : IComponentData
+        {
+            Coordinator.Instance.SetComponent<T>(this, component);
         }
 
         public void DestroySelf()

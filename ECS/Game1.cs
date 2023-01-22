@@ -35,9 +35,9 @@ namespace ECS
         {
             coordinator = Coordinator.Instance;
 
-            coordinator.RegisterComponent<Transform>();
-            coordinator.RegisterComponent<Sprite>();
-            coordinator.RegisterComponent<RigidBody>();
+            coordinator.RegisterComponent<TransformData>(ComponentMask.Transform);
+            coordinator.RegisterComponent<SpriteData>(ComponentMask.Sprite);
+            coordinator.RegisterComponent<RigidBodyData>(ComponentMask.RigidBody);
 
             coordinator.RegisterSystem<SpriteSystem>();
             coordinator.RegisterSystem<PhysicsSystem>();
@@ -60,7 +60,7 @@ namespace ECS
 
                 Entity entity = Entity.Create();
 
-                entity.AddComponent<Sprite>(new()
+                entity.AddComponent<SpriteData>(new()
                 {
                     Texture = texture,
                     SourceRectangle = new(0, 0, texture.Width, texture.Height),
@@ -70,17 +70,17 @@ namespace ECS
                     LayerDepth = 0
                 });
 
-                entity.AddComponent<Transform>(new()
+                entity.AddComponent<TransformData>(new()
                 {
                     Position = new(random.NextSingle() * WindowWidth, WindowHeight),
                     Rotation = 0,
                     Scale = new(0.125f, 0.125f)
                 });
 
-                entity.AddComponent<RigidBody>(new()
+                entity.AddComponent<RigidBodyData>(new()
                 {
                     Acceleration = Vector2.Zero,
-                    AngularVelocity = random.NextSingle() * 15f,
+                    AngularVelocity = random.NextSingle() * 30f - 15f,
                     Gravity = new Vector2(0, random.NextSingle() * 981f),
                     Velocity = Vector2.Zero
                 });

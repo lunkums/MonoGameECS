@@ -57,42 +57,47 @@ namespace ECS.Core
 
         // Component methods
 
-        public void RegisterComponent<T>() where T : IComponent
+        public void RegisterComponent<T>(ComponentMask componentMask) where T : IComponentData
         {
-            componentManager.RegisterComponent<T>();
+            componentManager.RegisterComponent<T>(componentMask);
         }
 
-        public void AddComponent<T>(Entity entity, T component) where T : IComponent
+        public void AddComponent<T>(Entity entity, T component) where T : IComponentData
         {
             eventQueue.Enqueue(() =>
             {
                 componentManager.Add(entity, component);
 
                 ComponentMask signature = entityManager.GetComponentMask(entity);
-                signature |= ComponentManager.GetMask<T>();
+                signature |= componentManager.GetMask<T>();
                 entityManager.SetComponentMask(entity, signature);
 
                 systemManager.EntitySignatureChanged(entity, signature);
             });
         }
 
-        public void RemoveComponent<T>(Entity entity) where T : IComponent
+        public void RemoveComponent<T>(Entity entity) where T : IComponentData
         {
             eventQueue.Enqueue(() =>
             {
                 componentManager.Remove<T>(entity);
 
                 ComponentMask signature = entityManager.GetComponentMask(entity);
-                signature &= ~ComponentManager.GetMask<T>();
+                signature &= ~componentManager.GetMask<T>();
                 entityManager.SetComponentMask(entity, signature);
 
                 systemManager.EntitySignatureChanged(entity, signature);
             });
         }
 
-        public ref T GetComponent<T>(Entity entity) where T : IComponent
+        public ref T GetComponent<T>(Entity entity) where T : IComponentData
         {
             return ref componentManager.Get<T>(entity);
+        }
+
+        public void SetComponent<T>(Entity entity, T component) where T : IComponentData
+        {
+            componentManager.Set<T>(entity, component);
         }
 
         // System methods

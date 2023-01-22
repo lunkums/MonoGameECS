@@ -3,11 +3,30 @@ using Microsoft.Xna.Framework;
 
 namespace ECS.Components
 {
-    public struct RigidBody : IComponent
+    public class RigidBody : Component<RigidBodyData>
     {
-        public Vector2 Acceleration;
-        public float AngularVelocity;
-        public Vector2 Gravity;
-        public Vector2 Velocity;
+        public Vector2 Acceleration
+        {
+            get => ComponentReference.Acceleration;
+            set => ComponentReference.Acceleration = value;
+        }
+
+        public float AngularVelocity
+        {
+            get => ComponentReference.AngularVelocity;
+            set => ComponentReference.AngularVelocity = value;
+        }
+
+        public Vector2 Gravity
+        {
+            get => ComponentReference.Gravity;
+            set => ComponentReference.Gravity = value;
+        }
+
+        public Vector2 Velocity
+        {
+            get => ComponentReference.Velocity;
+            set => ComponentReference.Velocity = value;
+        }
     }
 }

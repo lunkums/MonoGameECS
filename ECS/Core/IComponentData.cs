@@ -2,7 +2,7 @@
 
 namespace ECS.Core
 {
-    public interface IComponent
+    public interface IComponentData
     {
     }
 
