@@ -5,7 +5,7 @@ namespace ECS
 {
     public class EntityManager
     {
-        public static readonly ushort MaxEntities = ushort.MaxValue / 2;
+        public static readonly ushort MaxEntities = (ushort)short.MaxValue;
 
         private Queue<uint> availableIds = new();
         private ComponentMask[] componentMasks = new ComponentMask[MaxEntities];

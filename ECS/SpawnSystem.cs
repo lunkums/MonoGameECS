@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace ECS
+﻿namespace ECS
 {
     public class SpawnSystem : System, IUpdateSystem
     {
-        public override ComponentMask ComponentMask => ComponentMask.Transform | ComponentMask.RigidBody;
+        public override ComponentMask ComponentMask => ComponentMask.Transform;
 
         public void Update(float deltaTime)
         {

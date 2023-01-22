@@ -26,7 +26,6 @@ namespace ECS
                 
             };
             Content.RootDirectory = "Content";
-            IsFixedTimeStep = false;
             IsMouseVisible = true;
         }
 
@@ -57,7 +56,7 @@ namespace ECS
             for (int i = 0; i < EntityManager.MaxEntities; i++)
             {
 
-                Entity entity = coordinator.CreateEntity();
+                Entity entity = Entity.Create();
 
                 entity.AddComponent<Sprite>(new()
                 {
