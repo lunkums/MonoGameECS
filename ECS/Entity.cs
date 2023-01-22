@@ -1,0 +1,32 @@
+﻿namespace ECS
+{
+    public struct Entity
+    {
+        public uint Id { get; init; }
+
+        public static Entity Create()
+        {
+            return Coordinator.Instance.CreateEntity();
+        }
+
+        public void AddComponent<T>(T component) where T : IComponent
+        {
+            Coordinator.Instance.AddComponent(this, component);
+        }
+
+        public ref T GetComponentReference<T>() where T : IComponent
+        {
+            return ref Coordinator.Instance.GetComponent<T>(this);
+        }
+
+        public T GetComponent<T>() where T : IComponent
+        {
+            return Coordinator.Instance.GetComponent<T>(this);
+        }
+
+        public void DestroySelf()
+        {
+            Coordinator.Instance.DestroyEntity(this);
+        }
+    }
+}
