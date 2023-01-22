@@ -50,3 +50,42 @@ To add a new system type:
 public override ComponentMask ComponentMask => ComponentMask.Transform | ComponentMask.Sprite;
 ```
 4. Register the system with the coordinator in `Game1.cs` (I recommend under the `Initialize()` method).
+
+## Gotchas
+
+If you're using the main (OOP) branch, you should still be referencing components directly (instead of using the object wrappers) inside of systems because the object allocations can get expensive. Example:
+
+Good:
+```
+public void Update(float deltaTime)
+{
+    foreach (Entity entity in Entities)
+    {
+        ref RigidBodyData rigidBody = ref entity.GetComponentReference<RigidBodyData>();
+        ref TransformData transform = ref entity.GetComponentReference<TransformData>();
+
+        rigidBody.Acceleration += rigidBody.Gravity * deltaTime;
+        rigidBody.Velocity += rigidBody.Acceleration * deltaTime;
+        rigidBody.Velocity = Vector2.Min(rigidBody.Velocity, TerminalVelocity);
+        transform.Position += rigidBody.Velocity * deltaTime;
+        transform.Rotation += rigidBody.AngularVelocity * deltaTime;
+    }
+}
+```
+Bad:
+```
+public void Update(float deltaTime)
+{
+    foreach (Entity entity in Entities)
+    {
+        RigidBody rigidBody = entity.GetComponent<RigidBody>();
+        Transform transform = entity.GetComponent<Transform>();
+
+        rigidBody.Acceleration += rigidBody.Gravity * deltaTime;
+        rigidBody.Velocity += rigidBody.Acceleration * deltaTime;
+        rigidBody.Velocity = Vector2.Min(rigidBody.Velocity, TerminalVelocity);
+        transform.Position += rigidBody.Velocity * deltaTime;
+        transform.Rotation += rigidBody.AngularVelocity * deltaTime;
+    }
+}
+```
