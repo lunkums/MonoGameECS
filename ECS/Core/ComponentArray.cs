@@ -3,68 +3,66 @@ using System.Diagnostics;
 
 namespace ECS.Core
 {
-
     public class ComponentArray<T> : IComponentArray where T : IComponent
     {
-
         private T[] componentArray;
-        private Dictionary<uint, int> mEntityToIndexMap;
-        private Dictionary<int, uint> mIndexToEntityMap;
-        private int mSize;
+        private Dictionary<uint, int> entityToIndexMap;
+        private Dictionary<int, uint> indexToEntityMap;
+        private int size;
 
         public ComponentArray()
         {
             componentArray = new T[EntityManager.MaxEntities];
-            mEntityToIndexMap = new();
-            mIndexToEntityMap = new();
-            mSize = 0;
+            entityToIndexMap = new();
+            indexToEntityMap = new();
+            size = 0;
         }
 
         public void Insert(Entity entity, T component)
         {
             uint id = entity.Id;
-            Debug.Assert(!mEntityToIndexMap.ContainsKey(id), "Component added to same entity more than once.");
+            Debug.Assert(!entityToIndexMap.ContainsKey(id), "Component added to same entity more than once.");
 
             // Put new entry at end
-            int newIndex = mSize;
-            mEntityToIndexMap[id] = newIndex;
-            mIndexToEntityMap[newIndex] = id;
+            int newIndex = size;
+            entityToIndexMap[id] = newIndex;
+            indexToEntityMap[newIndex] = id;
             componentArray[newIndex] = component;
-            ++mSize;
+            ++size;
         }
 
         public void Remove(Entity entity)
         {
             uint id = entity.Id;
-            Debug.Assert(mEntityToIndexMap.ContainsKey(id), "Removing non-existent component.");
+            Debug.Assert(entityToIndexMap.ContainsKey(id), "Removing non-existent component.");
 
             // Copy element at end into deleted element's place to maintain density
-            int indexOfRemovedEntity = mEntityToIndexMap[id];
-            int indexOfLastElement = mSize - 1;
+            int indexOfRemovedEntity = entityToIndexMap[id];
+            int indexOfLastElement = size - 1;
             componentArray[indexOfRemovedEntity] = componentArray[indexOfLastElement];
 
             // Update map to point to moved spot
-            uint entityOfLastElement = mIndexToEntityMap[indexOfLastElement];
-            mEntityToIndexMap[entityOfLastElement] = indexOfRemovedEntity;
-            mIndexToEntityMap[indexOfRemovedEntity] = entityOfLastElement;
+            uint entityOfLastElement = indexToEntityMap[indexOfLastElement];
+            entityToIndexMap[entityOfLastElement] = indexOfRemovedEntity;
+            indexToEntityMap[indexOfRemovedEntity] = entityOfLastElement;
 
-            mEntityToIndexMap.Remove(id);
-            mIndexToEntityMap.Remove(indexOfLastElement);
+            entityToIndexMap.Remove(id);
+            indexToEntityMap.Remove(indexOfLastElement);
 
-            --mSize;
+            --size;
         }
 
         public ref T Get(Entity entity)
         {
             uint id = entity.Id;
-            Debug.Assert(mEntityToIndexMap.ContainsKey(id), "Retrieving non-existent component.");
+            Debug.Assert(entityToIndexMap.ContainsKey(id), "Retrieving non-existent component.");
 
-            return ref componentArray[mEntityToIndexMap[id]];
+            return ref componentArray[entityToIndexMap[id]];
         }
 
         public void EntityDestroyed(Entity entity)
         {
-            if (mEntityToIndexMap.ContainsKey(entity.Id))
+            if (entityToIndexMap.ContainsKey(entity.Id))
             {
                 Remove(entity);
             }
