@@ -18,15 +18,5 @@
         {
             return ref Coordinator.Instance.GetComponent<T>(this);
         }
-
-        public T GetComponent<T>() where T : IComponent
-        {
-            return Coordinator.Instance.GetComponent<T>(this);
-        }
-
-        public void DestroySelf()
-        {
-            Coordinator.Instance.DestroyEntity(this);
-        }
     }
 }

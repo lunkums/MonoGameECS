@@ -72,7 +72,7 @@ namespace ECS.Core
                 signature |= ComponentManager.GetMask<T>();
                 entityManager.SetComponentMask(entity, signature);
 
-                systemManager.EntitySignatureChanged(entity, signature);
+                systemManager.EntityMaskChanged(entity, signature);
             });
         }
 
@@ -86,7 +86,7 @@ namespace ECS.Core
                 signature &= ~ComponentManager.GetMask<T>();
                 entityManager.SetComponentMask(entity, signature);
 
-                systemManager.EntitySignatureChanged(entity, signature);
+                systemManager.EntityMaskChanged(entity, signature);
             });
         }
 
@@ -100,7 +100,7 @@ namespace ECS.Core
         public void RegisterSystem<T>() where T : ECSystem, new()
         {
             T system = systemManager.RegisterSystem<T>();
-            systemManager.SetSignature<T>(system.ComponentMask);
+            systemManager.SetComponentMask<T>(system.ComponentMask);
 
             if (system is IUpdateSystem updateSystem)
             {

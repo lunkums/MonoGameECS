@@ -18,7 +18,7 @@ namespace ECS.Core
             return system;
         }
 
-        public void SetSignature<T>(ComponentMask componentMask) where T : ECSystem
+        public void SetComponentMask<T>(ComponentMask componentMask) where T : ECSystem
         {
             Debug.Assert(systems.ContainsKey(typeof(T)), "System used before registered.");
 
@@ -34,7 +34,7 @@ namespace ECS.Core
             }
         }
 
-        public void EntitySignatureChanged(Entity entity, ComponentMask entityComponentMask)
+        public void EntityMaskChanged(Entity entity, ComponentMask entityComponentMask)
         {
             foreach (KeyValuePair<Type, ECSystem> pair in systems)
             {
