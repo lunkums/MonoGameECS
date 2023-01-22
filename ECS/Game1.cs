@@ -26,7 +26,6 @@ namespace ECS
             {
                 PreferredBackBufferWidth = WindowWidth,
                 PreferredBackBufferHeight = WindowHeight,
-                
             };
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -102,7 +101,7 @@ namespace ECS
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Gray);
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp,
                 DepthStencilState.None, RasterizerState.CullNone);
@@ -112,7 +111,7 @@ namespace ECS
             // Draw FPS
             float frameTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             counter.Update(frameTime);
-            spriteBatch.DrawString(fpsFont, counter.CurrentFramesPerSecond.ToString(), Vector2.One, Color.Black,
+            spriteBatch.DrawString(fpsFont, counter.CurrentFramesPerSecond.ToString("00.00"), Vector2.One, Color.Black,
                 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.5f);
 
             spriteBatch.End();
