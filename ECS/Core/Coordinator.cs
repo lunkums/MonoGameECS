@@ -97,7 +97,10 @@ namespace ECS.Core
 
         public void SetComponent<T>(Entity entity, T component) where T : IComponentData
         {
-            componentManager.Set<T>(entity, component);
+            eventQueue.Enqueue(() =>
+            {
+                componentManager.Set(entity, component);
+            });
         }
 
         // System methods
