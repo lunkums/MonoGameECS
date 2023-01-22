@@ -17,8 +17,8 @@ namespace ECS
         private SpriteBatch spriteBatch;
         private Coordinator coordinator;
 
-        private FrameCounter counter = new();
-        private SpriteFont fpsFont;
+        private Profiler updateCounter = new();
+        private Profiler drawCounter = new();
 
         public Game1()
         {
@@ -29,6 +29,12 @@ namespace ECS
             };
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+        }
+
+        protected override void EndRun()
+        {
+            updateCounter.WriteToLog("update");
+            drawCounter.WriteToLog("draw");
         }
 
         protected override void Initialize()
@@ -50,7 +56,6 @@ namespace ECS
         {
             spriteBatch = new(GraphicsDevice);
 
-            fpsFont = Content.Load<SpriteFont>("text");
             Texture2D texture = Content.Load<Texture2D>("happyface");
 
             Random random = new();
@@ -92,9 +97,11 @@ namespace ECS
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            updateCounter.Start();
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             coordinator.Update(deltaTime);
+            updateCounter.Stop();
 
             base.Update(gameTime);
         }
@@ -103,18 +110,14 @@ namespace ECS
         {
             GraphicsDevice.Clear(Color.Gray);
 
+            drawCounter.Start();
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp,
                 DepthStencilState.None, RasterizerState.CullNone);
 
             coordinator.Render(spriteBatch);
 
-            // Draw FPS
-            float frameTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            counter.Update(frameTime);
-            spriteBatch.DrawString(fpsFont, counter.CurrentFramesPerSecond.ToString("00.00"), Vector2.One, Color.Black,
-                0f, Vector2.Zero, 2f, SpriteEffects.None, 0.5f);
-
             spriteBatch.End();
+            drawCounter.Stop();
 
             base.Draw(gameTime);
         }
