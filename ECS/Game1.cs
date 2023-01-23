@@ -44,10 +44,12 @@ namespace ECS
             coordinator.RegisterComponent<TransformData>(ComponentMask.Transform);
             coordinator.RegisterComponent<SpriteData>(ComponentMask.Sprite);
             coordinator.RegisterComponent<RigidBodyData>(ComponentMask.RigidBody);
+            coordinator.RegisterComponent<RuleData>(ComponentMask.Rule);
 
             coordinator.RegisterSystem<SpriteSystem>();
             coordinator.RegisterSystem<PhysicsSystem>();
             coordinator.RegisterSystem<SpawnSystem>();
+            coordinator.RegisterSystem<RuleSystem>();
 
             base.Initialize();
         }
@@ -60,36 +62,57 @@ namespace ECS
 
             Random random = new();
 
-            for (int i = 0; i < EntityManager.MaxEntities; i++)
+            Player player = new();
+
+            player.AddComponent<SpriteData>(new()
             {
+                Texture = texture,
+                SourceRectangle = new(0, 0, texture.Width, texture.Height),
+                Color = new(random.NextSingle(), random.NextSingle(), random.NextSingle()),
+                Origin = Vector2.Zero,
+                Effects = SpriteEffects.None,
+                LayerDepth = 0
+            });
 
-                Entity entity = Entity.Create();
+            player.AddComponent<TransformData>(new()
+            {
+                Position = new(0, 0),
+                Rotation = 0,
+                Scale = new(0.125f, 0.125f)
+            });
 
-                entity.AddComponent<SpriteData>(new()
-                {
-                    Texture = texture,
-                    SourceRectangle = new(0, 0, texture.Width, texture.Height),
-                    Color = new(random.NextSingle(), random.NextSingle(), random.NextSingle()),
-                    Origin = Vector2.Zero,
-                    Effects = SpriteEffects.None,
-                    LayerDepth = 0
-                });
+            player.AddComponent<RigidBodyData>(new());
 
-                entity.AddComponent<TransformData>(new()
-                {
-                    Position = new(random.NextSingle() * WindowWidth, WindowHeight),
-                    Rotation = 0,
-                    Scale = new(0.125f, 0.125f)
-                });
+            //for (int i = 0; i < EntityManager.MaxEntities; i++)
+            //{
 
-                entity.AddComponent<RigidBodyData>(new()
-                {
-                    Acceleration = Vector2.Zero,
-                    AngularVelocity = random.NextSingle() * 30f - 15f,
-                    Gravity = new Vector2(0, random.NextSingle() * 981f),
-                    Velocity = Vector2.Zero
-                });
-            }
+            //    Entity entity = Entity.Create();
+
+            //    entity.AddComponent<SpriteData>(new()
+            //    {
+            //        Texture = texture,
+            //        SourceRectangle = new(0, 0, texture.Width, texture.Height),
+            //        Color = new(random.NextSingle(), random.NextSingle(), random.NextSingle()),
+            //        Origin = Vector2.Zero,
+            //        Effects = SpriteEffects.None,
+            //        LayerDepth = 0
+            //    });
+
+            //    entity.AddComponent<TransformData>(new()
+            //    {
+            //        Position = new(random.NextSingle() * WindowWidth, WindowHeight),
+            //        Rotation = 0,
+            //        Scale = new(0.125f, 0.125f)
+            //    });
+
+            //    entity.AddComponent<RigidBodyData>(new()
+            //    {
+            //        Acceleration = Vector2.Zero,
+            //        AngularVelocity = random.NextSingle() * 30f - 15f,
+            //        Gravity = new Vector2(0, random.NextSingle() * 981f),
+            //        Velocity = Vector2.Zero
+            //    });
+            //}
         }
 
         protected override void Update(GameTime gameTime)
