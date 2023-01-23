@@ -3,9 +3,9 @@ using ECS.Core;
 
 namespace ECS
 {
-    public abstract partial class Agent : Entity
+    public abstract partial class Actor : Entity
     {
-        public Agent()
+        public Actor()
         {
             AddRuleComponent();
         }

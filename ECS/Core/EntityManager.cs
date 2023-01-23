@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace ECS.Core
@@ -21,17 +22,15 @@ namespace ECS.Core
             }
         }
 
-        public Entity Create()
+        public uint NextAvailableEntityId => availableIds.Peek();
+
+        public void RegisterEntity(Entity entity)
         {
+            Debug.Assert(entity.Id == NextAvailableEntityId, "Entity registered more than once.");
             Debug.Assert(livingEntityCount < MaxEntities, "Too many entities in existence.");
 
-            Entity entity = new()
-            {
-                Id = availableIds.Dequeue()
-            };
+            availableIds.Dequeue();
             ++livingEntityCount;
-
-            return entity;
         }
 
         public void Destroy(Entity entity)

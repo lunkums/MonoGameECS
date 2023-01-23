@@ -1,15 +1,14 @@
-﻿using System;
-
-namespace ECS.Core
+﻿namespace ECS.Core
 {
     public class Entity
     {
-        public uint Id { get; init; }
-
-        public static Entity Create()
+        public Entity()
         {
-            return Coordinator.Instance.CreateEntity();
+            Id = Coordinator.Instance.GetAvailableEntityId();
+            Coordinator.Instance.RegisterEntity(this);
         }
+
+        public uint Id { get; }
 
         public void AddComponent<T>(T component) where T : IComponentData
         {

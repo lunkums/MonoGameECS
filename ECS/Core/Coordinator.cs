@@ -39,9 +39,14 @@ namespace ECS.Core
 
         // Entity methods
 
-        public Entity CreateEntity()
+        public void RegisterEntity(Entity entity)
         {
-            return entityManager.Create();
+            entityManager.RegisterEntity(entity);
+        }
+
+        public uint GetAvailableEntityId()
+        {
+            return entityManager.NextAvailableEntityId;
         }
 
         public void DestroyEntity(Entity entity)

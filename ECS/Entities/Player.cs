@@ -5,7 +5,7 @@ using System;
 
 namespace ECS
 {
-    public class Player : Agent
+    public class Player : Actor
     {
         public override void Update(float deltaTime)
         {
