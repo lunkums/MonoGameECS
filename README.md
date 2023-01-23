@@ -26,7 +26,7 @@ To add a new component type using the ecs-core branch:
 
 ### Components (main [OOP])
 
-o add a new component type using the main (OOP) branch:
+To add a new component type using the main (OOP) branch:
 1. Define a new struct as follows: `public struct COMPONENT_NAME : IComponentData` (I recommend appending the word 'Data' to the struct name, such as TransformData, to distinguish it from the component wrapper).
 2. Register the component with the coordinator in `Game1.cs` (I recommend under the `Initialize()` method).
 3. Provide a component mask when registering a component, which needs to be added to the `ComponentMask` enum (adhering to the rules of the [FlagsAttribute](https://learn.microsoft.com/en-us/dotnet/api/system.flagsattribute?view=net-7.0)).
