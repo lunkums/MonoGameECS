@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace ECS
+namespace ECS.Actors
 {
     public class Player : Actor
     {

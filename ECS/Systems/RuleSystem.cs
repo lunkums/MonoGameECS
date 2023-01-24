@@ -1,7 +1,7 @@
 ﻿using ECS.Components;
 using ECS.Core;
 
-namespace ECS
+namespace ECS.Systems
 {
     public class RuleSystem : ECSystem, IUpdateSystem
     {

@@ -1,7 +1,6 @@
 ﻿using ECS.Components;
-using ECS.Core;
 
-namespace ECS
+namespace ECS.Core
 {
     public abstract partial class Actor : Entity
     {

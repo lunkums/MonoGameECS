@@ -1,4 +1,5 @@
-﻿using ECS.Components;
+﻿using ECS.Actors;
+using ECS.Components;
 using ECS.Core;
 using ECS.Systems;
 using Microsoft.Xna.Framework;
