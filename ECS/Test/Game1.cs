@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace ECS
+namespace ECS.Test
 {
     public class Game1 : Game
     {
@@ -58,7 +58,7 @@ namespace ECS
             for (int i = 0; i < EntityManager.MaxEntities; i++)
             {
 
-                Entity entity = Entity.Create();
+                Entity entity = new();
 
                 entity.AddComponent<Sprite>(new()
                 {

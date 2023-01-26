@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace ECS.Core
@@ -19,19 +20,6 @@ namespace ECS.Core
             {
                 availableIds.Enqueue(id);
             }
-        }
-
-        public Entity Create()
-        {
-            Debug.Assert(livingEntityCount < MaxEntities, "Too many entities in existence.");
-
-            Entity entity = new()
-            {
-                Id = availableIds.Dequeue()
-            };
-            ++livingEntityCount;
-
-            return entity;
         }
 
         public void Destroy(Entity entity)
@@ -58,6 +46,20 @@ namespace ECS.Core
             Debug.Assert(id < MaxEntities, "Entity out of range.");
 
             return componentMasks[id];
+        }
+
+        internal void RegisterEntity(Entity entity)
+        {
+            Debug.Assert(livingEntityCount < MaxEntities, "Too many entities in existence.");
+            Debug.Assert(entity.Id == GetNextAvailableId(), "Unregistered entity in existence.");
+
+            availableIds.Dequeue();
+            ++livingEntityCount;
+        }
+
+        internal uint GetNextAvailableId()
+        {
+            return availableIds.Peek();
         }
     }
 }

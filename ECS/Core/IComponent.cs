@@ -12,6 +12,7 @@ namespace ECS.Core
         None = 0,
         Transform = 1,
         RigidBody = 2,
-        Sprite = 4
+        Sprite = 4,
+        Rule = 8
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace ECS
+namespace ECS.Test
 {
     public class FrameCounter
     {

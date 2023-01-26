@@ -1,6 +1,7 @@
 ﻿using ECS.Components;
 using ECS.Core;
 using Microsoft.Xna.Framework;
+using ECS.Test;
 
 namespace ECS.Systems
 {
@@ -14,8 +15,8 @@ namespace ECS.Systems
         {
             foreach (Entity entity in Entities)
             {
-                ref RigidBody rigidBody = ref entity.GetComponentReference<RigidBody>();
-                ref Transform transform = ref entity.GetComponentReference<Transform>();
+                ref RigidBody rigidBody = ref entity.GetComponent<RigidBody>();
+                ref Transform transform = ref entity.GetComponent<Transform>();
 
                 rigidBody.Acceleration += rigidBody.Gravity * deltaTime;
                 rigidBody.Velocity += rigidBody.Acceleration * deltaTime;

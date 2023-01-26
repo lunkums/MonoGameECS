@@ -17,7 +17,7 @@ namespace ECS.Core
 
         // The event queue is necessary to modify component arrays, and the global list of entities, without modifying
         // enumerators during iteration
-        private Queue<Action> eventQueue;
+        private PriorityQueue<Action, EventPriority> eventQueue;
 
         static Coordinator() { }
 
@@ -35,14 +35,17 @@ namespace ECS.Core
             eventQueue = new();
         }
 
+        private enum EventPriority : byte
+        {
+            AddComponent = 0,
+            RemoveComponent = 1,
+            DestroyEntity = 2,
+            InitializeActor = 3
+        }
+
         public static Coordinator Instance => instance;
 
         // Entity methods
-
-        public Entity CreateEntity()
-        {
-            return entityManager.Create();
-        }
 
         public void DestroyEntity(Entity entity)
         {
@@ -52,7 +55,8 @@ namespace ECS.Core
             {
                 componentManager.EntityDestroyed(entity);
                 systemManager.EntityDestroyed(entity);
-            });
+            },
+            EventPriority.DestroyEntity);
         }
 
         // Component methods
@@ -73,7 +77,8 @@ namespace ECS.Core
                 entityManager.SetComponentMask(entity, signature);
 
                 systemManager.EntityMaskChanged(entity, signature);
-            });
+            },
+            EventPriority.AddComponent);
         }
 
         public void RemoveComponent<T>(Entity entity) where T : IComponent
@@ -87,7 +92,8 @@ namespace ECS.Core
                 entityManager.SetComponentMask(entity, signature);
 
                 systemManager.EntityMaskChanged(entity, signature);
-            });
+            },
+            EventPriority.RemoveComponent);
         }
 
         public ref T GetComponent<T>(Entity entity) where T : IComponent
@@ -127,9 +133,24 @@ namespace ECS.Core
             ProcessEventQueue();
         }
 
+        internal uint GetNextAvailableId()
+        {
+            return entityManager.GetNextAvailableId();
+        }
+
+        internal void RegisterEntity(Entity entity)
+        {
+            entityManager.RegisterEntity(entity);
+        }
+
+        internal void InitializeActor(Actor actor)
+        {
+            eventQueue.Enqueue(actor.Initialize, EventPriority.InitializeActor);
+        }
+
         private void ProcessEventQueue()
         {
-            while (eventQueue.TryDequeue(out Action action))
+            while (eventQueue.TryDequeue(out Action action, out _))
             {
                 action();
             }

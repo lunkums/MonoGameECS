@@ -1,20 +1,21 @@
 ﻿namespace ECS.Core
 {
-    public struct Entity
+    public class Entity
     {
-        public uint Id { get; init; }
-
-        public static Entity Create()
+        public Entity()
         {
-            return Coordinator.Instance.CreateEntity();
+            Id = Coordinator.Instance.GetNextAvailableId();
+            Coordinator.Instance.RegisterEntity(this);
         }
+
+        public uint Id { get; }
 
         public void AddComponent<T>(T component) where T : IComponent
         {
             Coordinator.Instance.AddComponent(this, component);
         }
 
-        public ref T GetComponentReference<T>() where T : IComponent
+        public ref T GetComponent<T>() where T : IComponent
         {
             return ref Coordinator.Instance.GetComponent<T>(this);
         }

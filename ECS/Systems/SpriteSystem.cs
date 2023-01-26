@@ -12,8 +12,8 @@ namespace ECS.Systems
         {
             foreach (Entity entity in Entities)
             {
-                ref Sprite sprite = ref entity.GetComponentReference<Sprite>();
-                ref Transform transform = ref entity.GetComponentReference<Transform>();
+                ref Sprite sprite = ref entity.GetComponent<Sprite>();
+                ref Transform transform = ref entity.GetComponent<Transform>();
 
                 spriteBatch.Draw(
                     sprite.Texture,

@@ -1,5 +1,6 @@
 ﻿using ECS.Components;
 using ECS.Core;
+using YoureRunningOutOfTime.ECS.ECS.Test;
 
 namespace ECS.Systems
 {
@@ -11,7 +12,7 @@ namespace ECS.Systems
         {
             foreach (Entity entity in Entities)
             {
-                ref Transform transform = ref entity.GetComponentReference<Transform>();
+                ref Transform transform = ref entity.GetComponent<Transform>();
 
                 // Respawn before the top of the window if it falls past the bottom
                 transform.Position.Y = transform.Position.Y % Game1.WindowHeight
