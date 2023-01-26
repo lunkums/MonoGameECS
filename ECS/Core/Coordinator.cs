@@ -61,9 +61,9 @@ namespace ECS.Core
 
         // Component methods
 
-        public void RegisterComponent<T>() where T : IComponent
+        public void RegisterComponent<T>(ComponentMask componentMask) where T : IComponent
         {
-            componentManager.RegisterComponent<T>();
+            componentManager.RegisterComponent<T>(componentMask);
         }
 
         public void AddComponent<T>(Entity entity, T component) where T : IComponent
@@ -73,7 +73,7 @@ namespace ECS.Core
                 componentManager.Add(entity, component);
 
                 ComponentMask signature = entityManager.GetComponentMask(entity);
-                signature |= ComponentManager.GetMask<T>();
+                signature |= componentManager.GetMask<T>();
                 entityManager.SetComponentMask(entity, signature);
 
                 systemManager.EntityMaskChanged(entity, signature);
@@ -88,7 +88,7 @@ namespace ECS.Core
                 componentManager.Remove<T>(entity);
 
                 ComponentMask signature = entityManager.GetComponentMask(entity);
-                signature &= ~ComponentManager.GetMask<T>();
+                signature &= ~componentManager.GetMask<T>();
                 entityManager.SetComponentMask(entity, signature);
 
                 systemManager.EntityMaskChanged(entity, signature);

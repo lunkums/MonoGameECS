@@ -7,17 +7,21 @@ namespace ECS.Core
     public class ComponentManager
     {
         private Dictionary<Type, IComponentArray> componentArrays = new();
+        private Dictionary<Type, ComponentMask> componentMasks = new();
 
-        public static ComponentMask GetMask<T>() where T : IComponent
+        public ComponentMask GetMask<T>() where T : IComponent
         {
-            return Enum.Parse<ComponentMask>(typeof(T).Name);
+            Debug.Assert(componentArrays.ContainsKey(typeof(T)), "Component mask not registered before use.");
+
+            return componentMasks[typeof(T)];
         }
 
-        public void RegisterComponent<T>() where T : IComponent
+        public void RegisterComponent<T>(ComponentMask componentMask) where T : IComponent
         {
             Debug.Assert(!componentArrays.ContainsKey(typeof(T)), "Registering component type more than once.");
 
             componentArrays.Add(typeof(T), new ComponentArray<T>());
+            componentMasks.Add(typeof(T), componentMask);
         }
 
         public void Add<T>(Entity entity, T component) where T : IComponent

@@ -35,13 +35,15 @@ namespace ECS.Test
         {
             coordinator = Coordinator.Instance;
 
-            coordinator.RegisterComponent<Transform>();
-            coordinator.RegisterComponent<Sprite>();
-            coordinator.RegisterComponent<RigidBody>();
+            coordinator.RegisterComponent<Transform>(ComponentMask.Transform);
+            coordinator.RegisterComponent<RigidBody>(ComponentMask.RigidBody);
+            coordinator.RegisterComponent<Sprite>(ComponentMask.Sprite);
+            coordinator.RegisterComponent<Rule>(ComponentMask.Rule);
 
             coordinator.RegisterSystem<SpriteSystem>();
             coordinator.RegisterSystem<PhysicsSystem>();
             coordinator.RegisterSystem<SpawnSystem>();
+            coordinator.RegisterSystem<RuleSystem>();
 
             base.Initialize();
         }
