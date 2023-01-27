@@ -1,6 +1,6 @@
 ﻿using ECS.Components;
 using ECS.Core;
-using YoureRunningOutOfTime.ECS.ECS.Test;
+using ECS.Test;
 
 namespace ECS.Systems
 {
